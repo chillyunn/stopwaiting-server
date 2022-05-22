@@ -1,19 +1,28 @@
-package com.stopwaiting.server.web;
+package com.stopwaiting.server.web.dto.user;
 
 import com.stopwaiting.server.service.user.UserService;
-import com.stopwaiting.server.web.dto.UserResponseDto;
-import com.stopwaiting.server.web.dto.UserSaveRequestDto;
+import com.stopwaiting.server.web.dto.user.UserLoginRequestDto;
+import com.stopwaiting.server.web.dto.user.UserLoginResponseDto;
+import com.stopwaiting.server.web.dto.user.UserResponseDto;
+import com.stopwaiting.server.web.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 public class UserApiController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/api/v1/user")
+    @PostMapping("/api/v1/signup")
     public Long save(@RequestBody UserSaveRequestDto requestDto) {
         return userService.save(requestDto);
+    }
+
+    @PostMapping("/api/v1/login")
+    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto requestDto){
+        return userService.login(requestDto);
     }
 
     @GetMapping("/api/v1/user/{id}")

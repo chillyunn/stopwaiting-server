@@ -1,4 +1,4 @@
-package com.stopwaiting.server.web.dto;
+package com.stopwaiting.server.web.dto.user;
 
 import com.stopwaiting.server.domain.user.User;
 import lombok.*;
