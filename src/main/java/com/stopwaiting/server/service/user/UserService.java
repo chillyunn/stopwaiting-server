@@ -5,6 +5,7 @@ import com.stopwaiting.server.domain.user.UserRepository;
 import com.stopwaiting.server.web.dto.UserResponseDto;
 import com.stopwaiting.server.web.dto.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Transactional
-    public Long save(UserSaveRequestDto userCreateDto) {
-        return userRepository.save(userCreateDto.toEntity()).getId();
+    public Long save(UserSaveRequestDto userSaveRequestDto) {
+        String encodedPassword =passwordEncoder.encode(userSaveRequestDto.getPassword());
+        return userRepository.save(userSaveRequestDto.toEntity(encodedPassword)).getId();
     }
 
     @Transactional
