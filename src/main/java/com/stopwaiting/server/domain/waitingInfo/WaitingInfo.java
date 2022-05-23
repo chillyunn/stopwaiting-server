@@ -1,13 +1,12 @@
 package com.stopwaiting.server.domain.waitingInfo;
 
+import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -24,13 +23,13 @@ public class WaitingInfo {
 
 
     @Column
-    private String admin;
+    private Long adminId;
 
     @Column
-    private String locDetail;
+    private String locationDetail;
 
     @Column
-    private String info;
+    private String information;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -49,12 +48,11 @@ public class WaitingInfo {
     private Set<String> timetables=new HashSet<>();
 
     @Builder
-
-    public WaitingInfo(String name, String admin, String locDetail, String info, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables) {
+    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables) {
         this.name = name;
-        this.admin = admin;
-        this.locDetail = locDetail;
-        this.info = info;
+        this.adminId = adminId;
+        this.locationDetail = locationDetail;
+        this.information = information;
         this.type = type;
         this.maxPerson = maxPerson;
         this.latitude = latitude;
