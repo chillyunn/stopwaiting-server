@@ -1,4 +1,4 @@
-package com.stopwaiting.server.web.dto.user;
+package com.stopwaiting.server.web.api;
 
 import com.stopwaiting.server.service.user.UserService;
 import com.stopwaiting.server.web.dto.user.UserLoginRequestDto;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserApiController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/api/v1/signup")
     public Long save(@RequestBody UserSaveRequestDto requestDto) {
