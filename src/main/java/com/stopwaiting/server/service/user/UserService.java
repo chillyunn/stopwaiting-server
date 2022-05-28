@@ -2,10 +2,7 @@ package com.stopwaiting.server.service.user;
 
 import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.user.UserRepository;
-import com.stopwaiting.server.web.dto.user.UserLoginRequestDto;
-import com.stopwaiting.server.web.dto.user.UserLoginResponseDto;
-import com.stopwaiting.server.web.dto.user.UserResponseDto;
-import com.stopwaiting.server.web.dto.user.UserSaveRequestDto;
+import com.stopwaiting.server.web.dto.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,6 +39,12 @@ public class UserService {
                 .name(entity.getName())
                 .phoneNumber(entity.getPhoneNumber())
                 .build();
+    }
+    @Transactional
+    public Long update(Long id, UserUpdateRequestDto userUpdateRequestDto){
+        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
+        user.update(userUpdateRequestDto.getPhoneNumber(), userUpdateRequestDto.getToken(),userUpdateRequestDto.getReported());
+        return id;
     }
 
 

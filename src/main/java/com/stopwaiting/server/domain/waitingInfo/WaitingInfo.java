@@ -36,7 +36,7 @@ public class WaitingInfo {
     private Type type;
 
     @Column
-    private int maxPerson;
+    private Integer maxPerson;
 
     @Column
     private double latitude;

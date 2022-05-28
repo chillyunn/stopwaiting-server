@@ -23,6 +23,12 @@ public class User {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Column
+    private String token;
+
+    @Column
+    private Integer reported;
+
 
     @Builder
     public User(Long id, String name, String password, String phoneNumber) {
@@ -30,5 +36,13 @@ public class User {
         this.name = name;
         this.password = password;
         this.phoneNumber = phoneNumber;
+    }
+
+    public User update(String phoneNumber, String token, Integer reported){
+        this.phoneNumber=phoneNumber;
+        this.token=token;
+        this.reported =reported;
+
+        return this;
     }
 }
