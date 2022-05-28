@@ -1,14 +1,11 @@
-package com.stopwaiting.server.web;
+package com.stopwaiting.server.web.api;
 
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfoRepository;
 import com.stopwaiting.server.service.waitinginfo.WaitingInfoService;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoSaveRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +22,5 @@ public class WaitingInfoApiController {
     public List<WaitingInfoResponseDto> findAll(){
         return waitingInfoService.findAll();
     }
+//    @PutMapping("/api/v1/waitinginfo")
 }

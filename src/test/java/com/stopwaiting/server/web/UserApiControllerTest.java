@@ -66,7 +66,6 @@ class UserApiControllerTest {
     void User_로그인() throws Exception{
         //given
         Long id = 20171243L;
-        String name = "한기윤";
         String password = "1q2w3e4r";
         UserLoginRequestDto requestDto = UserLoginRequestDto.builder()
                 .id(id)
