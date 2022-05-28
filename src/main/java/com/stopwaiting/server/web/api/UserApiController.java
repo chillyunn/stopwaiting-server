@@ -1,12 +1,8 @@
 package com.stopwaiting.server.web.api;
 
 import com.stopwaiting.server.service.user.UserService;
-import com.stopwaiting.server.web.dto.user.UserLoginRequestDto;
-import com.stopwaiting.server.web.dto.user.UserLoginResponseDto;
-import com.stopwaiting.server.web.dto.user.UserResponseDto;
-import com.stopwaiting.server.web.dto.user.UserSaveRequestDto;
+import com.stopwaiting.server.web.dto.user.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
