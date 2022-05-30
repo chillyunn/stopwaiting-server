@@ -12,6 +12,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class WaitingInfoResponseDto {
+    private Long id;
     private Long adminId;
     private double latitude;
     private double longitude;
@@ -23,6 +24,7 @@ public class WaitingInfoResponseDto {
     private Set<String> timetables=new HashSet<>();
 
     public WaitingInfoResponseDto(WaitingInfo entity){
+        this.id=entity.getId();
         this.adminId= entity.getAdminId();
         this.latitude=entity.getLatitude();
         this.longitude= entity.getLongitude();

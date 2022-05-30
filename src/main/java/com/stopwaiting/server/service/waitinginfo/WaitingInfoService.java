@@ -5,6 +5,8 @@ import com.stopwaiting.server.domain.waitingInfo.WaitingInfoRepository;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoSaveRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +21,26 @@ public class WaitingInfoService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public Long save(WaitingInfoSaveRequestDto requestDto){
+    public Long save(WaitingInfoSaveRequestDto requestDto) {
         return waitingInfoRepository.save(requestDto.toEntity()).getId();
     }
+
     @Transactional
-    public List<WaitingInfoResponseDto> findAll(){
-         return waitingInfoRepository.findAll()
-                 .stream()
-                 .map(waitingInfo -> modelMapper.map(waitingInfo,WaitingInfoResponseDto.class)).collect(Collectors.toList());
+//    public List<WaitingInfoResponseDto> findAll(){
+    public JSONObject findAll() {
+
+        JSONObject jsonMain = new JSONObject();
+        jsonMain.put("data", waitingInfoRepository.findAll()
+                .stream()
+                .map(waitingInfo -> modelMapper.map(waitingInfo, WaitingInfoResponseDto.class)).collect(Collectors.toList()));
+
+
+//        return waitingInfoRepository.findAll()
+//                .stream()
+//                .map(waitingInfo -> modelMapper.map(waitingInfo, WaitingInfoResponseDto.class)).collect(Collectors.toList());
+        return jsonMain;
     }
+//    @Transactional
+//    public Long update(Long id)
+
 }

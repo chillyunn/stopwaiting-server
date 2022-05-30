@@ -8,14 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserUpdateRequestDto {
     private String phoneNumber;
-    private String token;
     private Integer reported;
 
     @Builder
-
-    public UserUpdateRequestDto(String phoneNumber, String token, Integer reported) {
+    public UserUpdateRequestDto(String phoneNumber,Integer reported) {
         this.phoneNumber = phoneNumber;
-        this.token = token;
         this.reported = reported;
     }
 }

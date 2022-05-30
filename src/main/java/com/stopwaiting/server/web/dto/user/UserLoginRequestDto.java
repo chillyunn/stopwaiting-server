@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 public class UserLoginRequestDto {
     private Long id;
     private String password;
+    private String token;
 
     @Builder
-    public UserLoginRequestDto(Long id, String password) {
+    public UserLoginRequestDto(Long id, String password,String token) {
         this.id = id;
         this.password = password;
+        this.token=token;
     }
 }

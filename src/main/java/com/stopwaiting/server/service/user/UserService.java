@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -30,6 +32,7 @@ public class UserService {
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         Long id = requestDto.getId();
         User entity = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디의 회원정보가 없습니다. id=" + id));
+        entity.updateToken(requestDto.getToken());
         String password = requestDto.getPassword();
         if (!passwordEncoder.matches(password, entity.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -43,11 +46,28 @@ public class UserService {
     @Transactional
     public Long update(Long id, UserUpdateRequestDto userUpdateRequestDto){
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
-        user.update(userUpdateRequestDto.getPhoneNumber(), userUpdateRequestDto.getToken(),userUpdateRequestDto.getReported());
+        user.update(userUpdateRequestDto.getPhoneNumber(),userUpdateRequestDto.getReported());
         return id;
     }
-
-
+    @Transactional
+    public Long updateToken(Long id, UserTokenRequestDto requestDto){
+        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
+        user.updateToken(requestDto.getToken());
+        return id;
+    }
+    @Transactional
+    public Long addReport(Long id){
+        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
+        user.addReport();
+        return id;
+    }
+    @Transactional
+    public Long checkId(Long id){
+        if(!userRepository.existsById(id))
+            return id;
+        else
+            throw new IllegalArgumentException("중복된 아이디 입니다.");
+    }
     public UserResponseDto findById(Long id) {
         User entity = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디의 회원정보가 없습니다. id=" + id));
         return new UserResponseDto(entity);

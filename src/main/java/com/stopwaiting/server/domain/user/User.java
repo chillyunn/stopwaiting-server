@@ -38,11 +38,18 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public User update(String phoneNumber, String token, Integer reported){
+    public User update(String phoneNumber,Integer reported){
         this.phoneNumber=phoneNumber;
-        this.token=token;
         this.reported =reported;
 
+        return this;
+    }
+    public User updateToken(String token){
+        this.token=token;
+        return this;
+    }
+    public User addReport(){
+        this.reported+=1;
         return this;
     }
 }

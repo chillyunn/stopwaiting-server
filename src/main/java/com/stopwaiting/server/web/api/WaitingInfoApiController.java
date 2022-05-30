@@ -5,6 +5,7 @@ import com.stopwaiting.server.service.waitinginfo.WaitingInfoService;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoSaveRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class WaitingInfoApiController {
         return waitingInfoService.save(requestDto);
     }
     @GetMapping("/api/v1/waitinginfo")
-    public List<WaitingInfoResponseDto> findAll(){
+//    public List<WaitingInfoResponseDto> findAll(){
+    public JSONObject findAll(){
         return waitingInfoService.findAll();
     }
 //    @PutMapping("/api/v1/waitinginfo")

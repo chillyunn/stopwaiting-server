@@ -2,6 +2,7 @@ package com.stopwaiting.server.web;
 
 import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.user.UserRepository;
+import com.stopwaiting.server.web.dto.user.UserCheckIdRequestDto;
 import com.stopwaiting.server.web.dto.user.UserLoginRequestDto;
 import com.stopwaiting.server.web.dto.user.UserLoginResponseDto;
 import com.stopwaiting.server.web.dto.user.UserSaveRequestDto;
@@ -35,9 +36,22 @@ class UserApiControllerTest {
     public void tearDown() throws Exception {
         userRepository.deleteAll();
     }
-
     @Test
     @Order(1)
+    void User_중복확인() throws Exception{
+        Long id = 20171243L;
+        UserCheckIdRequestDto requestDto = UserCheckIdRequestDto.builder()
+                .id(id)
+                .build();
+        String url = "http://localhost:"+port+"/api/v1/checkid";
+        //when
+        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    }
+    @Test
+    @Order(2)
     void User_등록() throws Exception {
         //given
         Long id = 20171243L;
@@ -62,7 +76,7 @@ class UserApiControllerTest {
         assertThat(all.get(0).getName()).isEqualTo(name);
     }
     @Test
-    @Order(2)
+    @Order(3)
     void User_로그인() throws Exception{
         //given
         Long id = 20171243L;
