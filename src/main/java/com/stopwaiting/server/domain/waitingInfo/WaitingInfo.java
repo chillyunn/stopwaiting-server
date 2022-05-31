@@ -47,8 +47,11 @@ public class WaitingInfo {
     @ElementCollection
     private Set<String> timetables=new HashSet<>();
 
+    @ElementCollection
+    private Set<String> images=new HashSet<>();
+
     @Builder
-    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables) {
+    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables,Set<String> images) {
         this.name = name;
         this.adminId = adminId;
         this.locationDetail = locationDetail;
@@ -58,5 +61,6 @@ public class WaitingInfo {
         this.latitude = latitude;
         this.longitude = longitude;
         this.timetables = timetables;
+        this.images=images;
     }
 }

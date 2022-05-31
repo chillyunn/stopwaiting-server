@@ -5,6 +5,7 @@ import com.stopwaiting.server.domain.waitingInfo.WaitingInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,12 +21,13 @@ public class WaitingInfoSaveRequestDto {
     private String information;
     private Type type;
     private int maxPerson;
-    private Set<String> timetables=new HashSet<>();
+    private Set<String> timetables = new HashSet<>();
+    private Set<String> images = new HashSet();
 
     @Builder
     public WaitingInfoSaveRequestDto(Long adminId, double latitude, double longitude,
                                      String name, String locationDetail, String information,
-                                     Type type, int maxPerson, Set<String> timetables) {
+                                     Type type, int maxPerson, Set<String> timetables,Set<String> images) {
         this.adminId = adminId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -35,8 +37,11 @@ public class WaitingInfoSaveRequestDto {
         this.type = type;
         this.maxPerson = maxPerson;
         this.timetables = timetables;
+        this.images=images;
     }
-    public WaitingInfo toEntity(){
+
+    public WaitingInfo toEntity(String location) {
+
         return WaitingInfo.builder()
                 .adminId(adminId)
                 .latitude(latitude)
@@ -47,6 +52,7 @@ public class WaitingInfoSaveRequestDto {
                 .type(type)
                 .maxPerson(maxPerson)
                 .timetables(timetables)
+                .images(location)
                 .build();
     }
 }

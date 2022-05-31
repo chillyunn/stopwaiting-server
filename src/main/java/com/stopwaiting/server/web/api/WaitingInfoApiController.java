@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,13 +17,20 @@ public class WaitingInfoApiController {
     private final WaitingInfoService waitingInfoService;
 
     @PostMapping("/api/v1/waitinginfo")
-    public Long save(@RequestBody WaitingInfoSaveRequestDto requestDto) {
+    public Long save(@RequestBody WaitingInfoSaveRequestDto requestDto) throws IOException {
         return waitingInfoService.save(requestDto);
     }
     @GetMapping("/api/v1/waitinginfo")
-//    public List<WaitingInfoResponseDto> findAll(){
     public JSONObject findAll(){
         return waitingInfoService.findAll();
     }
-//    @PutMapping("/api/v1/waitinginfo")
+    @GetMapping("/api/v1/waitinginfo/{id}")
+    public WaitingInfoResponseDto findById(@PathVariable Long id) { return waitingInfoService.findById(id);}
+
+
+
+
+
+//  @PutMapping("/api/v1/waitinginfo")
+
 }
