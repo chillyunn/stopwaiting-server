@@ -40,7 +40,7 @@ public class WaitingInfoSaveRequestDto {
         this.images=images;
     }
 
-    public WaitingInfo toEntity(String location) {
+    public WaitingInfo toEntity() {
 
         return WaitingInfo.builder()
                 .adminId(adminId)
@@ -52,7 +52,7 @@ public class WaitingInfoSaveRequestDto {
                 .type(type)
                 .maxPerson(maxPerson)
                 .timetables(timetables)
-                .images(location)
+                .images(images)
                 .build();
     }
 }

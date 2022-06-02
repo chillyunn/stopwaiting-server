@@ -17,7 +17,6 @@ import org.springframework.util.Base64Utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,17 +30,7 @@ public class WaitingInfoService {
 
     @Transactional
     public Long save(WaitingInfoSaveRequestDto requestDto) throws IOException {
-        Date date = new Date();
-        StringBuilder sb = new StringBuilder();
-        sb.append(date.getTime());
-        ArrayList<String> images = new ArrayList<>(requestDto.getImages());
-
-        for (String image : images) {
-            log.error(image);
-            byte[] decodedBytes = Base64Utils.decodeFromUrlSafeString(image);
-            FileUtils.writeByteArrayToFile(new File("C://KIT//2022-1//Capstone//image/" + sb.toString()), decodedBytes);
-        }
-        return waitingInfoRepository.save(requestDto.toEntity("C://KIT//2022-1//Capstone//image/" + sb.toString())).getId();
+        return waitingInfoRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional(readOnly = true)

@@ -1,5 +1,6 @@
 package com.stopwaiting.server.domain.user;
 
+import com.stopwaiting.server.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     private Long id;
 

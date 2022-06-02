@@ -30,7 +30,6 @@ public class WaitingInfoApiController {
 
 
 
-
 //  @PutMapping("/api/v1/waitinginfo")
 
 }

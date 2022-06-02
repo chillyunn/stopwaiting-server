@@ -1,5 +1,6 @@
 package com.stopwaiting.server.domain.waitingInfo;
 
+import com.stopwaiting.server.domain.BaseTimeEntity;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-public class WaitingInfo {
+public class WaitingInfo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
