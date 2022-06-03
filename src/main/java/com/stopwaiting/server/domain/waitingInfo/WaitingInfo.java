@@ -1,13 +1,16 @@
 package com.stopwaiting.server.domain.waitingInfo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stopwaiting.server.domain.BaseTimeEntity;
-import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
+import com.stopwaiting.server.domain.image.WaitingInfoImage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,17 +22,17 @@ public class WaitingInfo extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
 
-    @Column
+    @Column(nullable = false)
     private Long adminId;
 
-    @Column
+    @Column(nullable = false)
     private String locationDetail;
 
-    @Column
+    @Column(nullable = false)
     private String information;
 
     @Enumerated(EnumType.STRING)
@@ -39,20 +42,21 @@ public class WaitingInfo extends BaseTimeEntity {
     @Column
     private Integer maxPerson;
 
-    @Column
+    @Column(nullable = false)
     private double latitude;
 
-    @Column
+    @Column(nullable = false)
     private double longitude;
 
     @ElementCollection
     private Set<String> timetables=new HashSet<>();
 
-    @ElementCollection
-    private Set<String> images=new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "waitingInfo",cascade = CascadeType.ALL)
+    private List<WaitingInfoImage> images = new ArrayList<>();
 
     @Builder
-    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables,Set<String> images) {
+    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables) {
         this.name = name;
         this.adminId = adminId;
         this.locationDetail = locationDetail;
@@ -62,6 +66,10 @@ public class WaitingInfo extends BaseTimeEntity {
         this.latitude = latitude;
         this.longitude = longitude;
         this.timetables = timetables;
-        this.images=images;
+    }
+
+    public void addImages(WaitingInfoImage image){
+        this.images.add(image);
+        image.updateWaitinginfo(this);
     }
 }

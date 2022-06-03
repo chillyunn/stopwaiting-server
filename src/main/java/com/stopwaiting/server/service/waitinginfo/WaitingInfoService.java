@@ -12,13 +12,8 @@ import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,16 +29,11 @@ public class WaitingInfoService {
     }
 
     @Transactional(readOnly = true)
-//    public List<WaitingInfoResponseDto> findAll(){
     public JSONObject findAll() {
-
         JSONObject jsonMain = new JSONObject();
         jsonMain.put("data", waitingInfoRepository.findAll()
                 .stream()
                 .map(waitingInfo -> modelMapper.map(waitingInfo, WaitingInfoResponseDto.class)).collect(Collectors.toList()));
-//        return waitingInfoRepository.findAll()
-//                .stream()
-//                .map(waitingInfo -> modelMapper.map(waitingInfo, WaitingInfoResponseDto.class)).collect(Collectors.toList());
         return jsonMain;
     }
 //    @Transactional

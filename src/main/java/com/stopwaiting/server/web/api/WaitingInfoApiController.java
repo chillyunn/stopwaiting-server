@@ -28,8 +28,6 @@ public class WaitingInfoApiController {
     public WaitingInfoResponseDto findById(@PathVariable Long id) { return waitingInfoService.findById(id);}
 
 
-
-
 //  @PutMapping("/api/v1/waitinginfo")
 
 }
