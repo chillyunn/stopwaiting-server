@@ -22,4 +22,11 @@ public class UserQueue {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAITINGQUEUE_ID")
     private WaitingQueue waitingQueue;
+
+    public void updateUser(User user){
+        this.user=user;
+    }
+    public void updateWaitingQueue(WaitingQueue waitingQueue){
+        this.waitingQueue=waitingQueue;
+    }
 }

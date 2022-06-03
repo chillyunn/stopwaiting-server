@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class User extends BaseTimeEntity {
     @Id
     private Long id;
@@ -60,5 +60,9 @@ public class User extends BaseTimeEntity {
     public User addReport() {
         this.reported += 1;
         return this;
+    }
+    public void addUserQueue(UserQueue userQueue){
+        this.getUserQueues().add(userQueue);
+        userQueue.updateUser(this);
     }
 }

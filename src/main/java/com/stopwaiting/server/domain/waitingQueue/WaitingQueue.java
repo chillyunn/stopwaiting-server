@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -33,8 +32,9 @@ public class WaitingQueue {
     public WaitingQueue(WaitingInfo waitingInfo, List<User> users) {
         this.waitingInfo = waitingInfo;
     }
-    public void addUsers(User user){
-        this.users.add(user);
-        user
+    public void addUserQueue(UserQueue userQueue){
+        this.userQueues.add(userQueue);
+        userQueue.updateWaitingQueue(this);
+
     }
 }
