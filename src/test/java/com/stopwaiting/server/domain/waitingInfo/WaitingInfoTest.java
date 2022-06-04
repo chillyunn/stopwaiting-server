@@ -38,7 +38,6 @@ class WaitingInfoTest {
                 .maxPerson(maxPerson)
                 .latitude(latitude)
                 .longitude(longitude)
-                .timetables(timetables)
                 .build());
         //when
         List<WaitingInfo> waitingInfos = waitingInfoRepository.findAll();

@@ -1,6 +1,7 @@
 package com.stopwaiting.server.web.dto.waitinginfo;
 
 import com.stopwaiting.server.domain.image.WaitingInfoImage;
+import com.stopwaiting.server.domain.timetable.Timetable;
 import com.stopwaiting.server.domain.waitingInfo.Type;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfo;
 import lombok.Builder;
@@ -24,8 +25,8 @@ public class WaitingInfoResponseDto {
     private String information;
     private Type type;
     private int maxPerson;
-    private Set<String> timetables=new HashSet<>();
-    private List<WaitingInfoImage> images= new ArrayList<>();
+    private List<Timetable> timetables;
+    private List<WaitingInfoImage> images;
 
     public WaitingInfoResponseDto(WaitingInfo entity){
         this.id=entity.getId();

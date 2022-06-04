@@ -1,5 +1,6 @@
 package com.stopwaiting.server.domain.image;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.stopwaiting.server.domain.BaseTimeEntity;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfo;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class WaitingInfoImage extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAITINGINFO_ID")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private WaitingInfo waitingInfo;
 
     @Column(nullable = false)

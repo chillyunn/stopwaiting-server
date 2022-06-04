@@ -2,6 +2,7 @@ package com.stopwaiting.server.domain.userqueue;
 
 import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.waitingQueue.WaitingQueue;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,17 +17,23 @@ public class UserQueue {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAITINGQUEUE_ID")
     private WaitingQueue waitingQueue;
 
-    public void updateUser(User user){
-        this.user=user;
+    @Builder
+    public UserQueue(User user, WaitingQueue waitingQueue) {
+        this.user = user;
+        this.waitingQueue = waitingQueue;
     }
-    public void updateWaitingQueue(WaitingQueue waitingQueue){
-        this.waitingQueue=waitingQueue;
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
+    public void updateWaitingQueue(WaitingQueue waitingQueue) {
+        this.waitingQueue = waitingQueue;
     }
 }

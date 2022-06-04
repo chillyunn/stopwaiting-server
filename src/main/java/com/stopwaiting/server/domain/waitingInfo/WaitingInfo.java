@@ -3,15 +3,14 @@ package com.stopwaiting.server.domain.waitingInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stopwaiting.server.domain.BaseTimeEntity;
 import com.stopwaiting.server.domain.image.WaitingInfoImage;
+import com.stopwaiting.server.domain.timetable.Timetable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -48,15 +47,16 @@ public class WaitingInfo extends BaseTimeEntity {
     @Column(nullable = false)
     private double longitude;
 
-    @ElementCollection
-    private Set<String> timetables=new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "waitingInfo",cascade = CascadeType.ALL)
+    private List<Timetable> timetables = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "waitingInfo",cascade = CascadeType.ALL)
     private List<WaitingInfoImage> images = new ArrayList<>();
 
     @Builder
-    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Set<String> timetables) {
+    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude) {
         this.name = name;
         this.adminId = adminId;
         this.locationDetail = locationDetail;
@@ -65,11 +65,14 @@ public class WaitingInfo extends BaseTimeEntity {
         this.maxPerson = maxPerson;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.timetables = timetables;
     }
 
     public void addImages(WaitingInfoImage image){
         this.images.add(image);
         image.updateWaitinginfo(this);
+    }
+    public void addTimetable(Timetable timetable){
+        this.timetables.add(timetable);
+        timetable.addWaitingInfo(this);
     }
 }

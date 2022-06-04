@@ -1,7 +1,10 @@
 package com.stopwaiting.server.service.waitinginfo;
 
+import com.stopwaiting.server.domain.timetable.Timetable;
+import com.stopwaiting.server.domain.timetable.TimetableRepository;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfo;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfoRepository;
+import com.stopwaiting.server.web.dto.timetable.TimetableSaveRequestDto;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,11 +25,19 @@ import java.util.stream.Collectors;
 @Service
 public class WaitingInfoService {
     private final WaitingInfoRepository waitingInfoRepository;
+    private final TimetableRepository timetableRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
     public Long save(WaitingInfoSaveRequestDto requestDto) throws IOException {
-        return waitingInfoRepository.save(requestDto.toEntity()).getId();
+        Long id =waitingInfoRepository.save(requestDto.toEntity()).getId();
+        for(String timetable:requestDto.getTimetables()){
+            timetableRepository.save(
+                    new TimetableSaveRequestDto(waitingInfoRepository.findById(id).
+                    orElseThrow(()->new IllegalArgumentException("존재하지 않는 WaitingInfo"))
+                            ,timetable).toEntity());
+        }
+        return id;
     }
 
     @Transactional(readOnly = true)

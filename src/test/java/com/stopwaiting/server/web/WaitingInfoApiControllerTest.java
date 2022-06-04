@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +54,7 @@ class WaitingInfoApiControllerTest {
         String information="미용실입니다";
         Type type=Type.NORMAL;
         int maxPerson = 5;
-        Set<String> timetables=new HashSet<>();
+        List<String> timetables= new ArrayList<>();
         timetables.add("13:00");
         timetables.add("14:00");
         timetables.add("15:00");

@@ -1,5 +1,6 @@
 package com.stopwaiting.server.domain.waitingQueue;
 
+import com.stopwaiting.server.domain.timetable.Timetable;
 import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.userqueue.UserQueue;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfo;
@@ -19,18 +20,22 @@ public class WaitingQueue {
     @GeneratedValue
     private Long id;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "WAITINGINFO_ID")
+//    private WaitingInfo waitingInfo;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WAITINGINFO_ID")
-    private WaitingInfo waitingInfo;
+    @JoinColumn(name = "TIMETABLE_ID")
+    private Timetable timetable;
 
-    @OneToMany(mappedBy = "waitingqueue",cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "waitingqueue",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "waitingQueue",cascade = CascadeType.ALL)
     private List<UserQueue> userQueues = new ArrayList<>();
+
     @Builder
-    public WaitingQueue(WaitingInfo waitingInfo, List<User> users) {
-        this.waitingInfo = waitingInfo;
+    public WaitingQueue(//WaitingInfo waitingInfo,
+                        Timetable timetable) {
+        //this.waitingInfo = waitingInfo;
+        this.timetable = timetable;
     }
     public void addUserQueue(UserQueue userQueue){
         this.userQueues.add(userQueue);
