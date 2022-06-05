@@ -1,5 +1,6 @@
 package com.stopwaiting.server.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stopwaiting.server.domain.BaseTimeEntity;
 import com.stopwaiting.server.domain.userqueue.UserQueue;
 import com.stopwaiting.server.domain.waitingQueue.WaitingQueue;
@@ -34,6 +35,7 @@ public class User extends BaseTimeEntity {
     @Column
     private Integer reported;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserQueue> userQueues = new ArrayList<>();
 
@@ -64,5 +66,9 @@ public class User extends BaseTimeEntity {
     public void addUserQueue(UserQueue userQueue){
         this.getUserQueues().add(userQueue);
         userQueue.updateUser(this);
+    }
+    @PrePersist
+    public void prePersist(){
+        this.reported=this.reported== null ? 0 : this.reported;
     }
 }

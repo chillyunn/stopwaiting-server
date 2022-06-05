@@ -38,6 +38,10 @@ public class WaitingInfo extends BaseTimeEntity {
     @Column(nullable = false)
     private Type type;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Status status;
+
     @Column
     private Integer maxPerson;
 
@@ -56,7 +60,7 @@ public class WaitingInfo extends BaseTimeEntity {
     private List<WaitingInfoImage> images = new ArrayList<>();
 
     @Builder
-    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude) {
+    public WaitingInfo(String name, Long adminId, String locationDetail, String information, Type type, int maxPerson, double latitude, double longitude, Status status) {
         this.name = name;
         this.adminId = adminId;
         this.locationDetail = locationDetail;
@@ -65,6 +69,7 @@ public class WaitingInfo extends BaseTimeEntity {
         this.maxPerson = maxPerson;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.status = status;
     }
 
     public void addImages(WaitingInfoImage image){
@@ -74,5 +79,9 @@ public class WaitingInfo extends BaseTimeEntity {
     public void addTimetable(Timetable timetable){
         this.timetables.add(timetable);
         timetable.addWaitingInfo(this);
+    }
+    @PrePersist
+    public void prePersist(){
+        this.status=this.status == null ? Status.HOLDED : this.status;
     }
 }

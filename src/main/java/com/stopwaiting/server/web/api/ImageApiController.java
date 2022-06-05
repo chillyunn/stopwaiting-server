@@ -1,6 +1,6 @@
 package com.stopwaiting.server.web.api;
 
-import com.stopwaiting.server.service.image.ImageService;
+import com.stopwaiting.server.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;

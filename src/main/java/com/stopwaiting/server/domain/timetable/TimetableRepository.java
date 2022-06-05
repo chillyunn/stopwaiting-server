@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface TimetableRepository extends JpaRepository<Timetable,Long> {
     //@Query("SELECT t FROM Timetable t WHERE t.time =: time and t.waitingInfo =: id")
     Timetable findByWaitingInfoAndTime(WaitingInfo waitingInfo, String time);
+    Timetable findByTime(String time);
 }

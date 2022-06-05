@@ -1,4 +1,4 @@
-package com.stopwaiting.server.service.waitingqueue;
+package com.stopwaiting.server.service;
 
 import com.stopwaiting.server.domain.timetable.Timetable;
 import com.stopwaiting.server.domain.timetable.TimetableRepository;
@@ -39,6 +39,15 @@ public class WaitingQueueService {
         .stream()
         .map(waitingQueue -> modelMapper.map(waitingQueue, WaitingQueueResponseDto.class))
         .collect(Collectors.toList()));
+        return jsonMain;
+    }
+    @Transactional
+    public JSONObject findQueue(Long id, String time) {
+        WaitingInfo waitingInfo = waitingInfoRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 WaitingInfo"));
+        Timetable timetable = timetableRepository.findByWaitingInfoAndTime(waitingInfo,time);
+
+        JSONObject jsonMain = new JSONObject();
+        jsonMain.put("data",waitingQueueRepository.findByTimetable(timetable));
         return jsonMain;
     }
 

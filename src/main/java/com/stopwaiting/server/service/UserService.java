@@ -1,19 +1,24 @@
-package com.stopwaiting.server.service.user;
+package com.stopwaiting.server.service;
 
 import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.user.UserRepository;
+import com.stopwaiting.server.domain.userqueue.UserQueue;
+import com.stopwaiting.server.domain.userqueue.UserQueueRepository;
 import com.stopwaiting.server.web.dto.user.*;
+import com.stopwaiting.server.web.dto.userqueue.UserQueueResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final UserQueueRepository userQueueRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -37,6 +42,8 @@ public class UserService {
         if (!passwordEncoder.matches(password, entity.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+        entity.updateToken(requestDto.getToken());
+
         return UserLoginResponseDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -49,12 +56,12 @@ public class UserService {
         user.update(userUpdateRequestDto.getPhoneNumber(),userUpdateRequestDto.getReported());
         return id;
     }
-    @Transactional
-    public Long updateToken(Long id, UserTokenRequestDto requestDto){
-        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
-        user.updateToken(requestDto.getToken());
-        return id;
-    }
+//    @Transactional
+//    public Long updateToken(Long id, String token){
+//        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
+//        user.updateToken(token);
+//        return id;
+//    }
     @Transactional
     public Long addReport(Long id){
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
@@ -72,4 +79,5 @@ public class UserService {
         User entity = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디의 회원정보가 없습니다. id=" + id));
         return new UserResponseDto(entity);
     }
+
 }

@@ -18,9 +18,9 @@ public class Timetable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)//Lazy에서 바꿈
     @JoinColumn(name = "WAITINGINFO_ID",nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private WaitingInfo waitingInfo;
 
     @Column(nullable = false)
