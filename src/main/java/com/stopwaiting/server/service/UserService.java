@@ -2,17 +2,21 @@ package com.stopwaiting.server.service;
 
 import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.user.UserRepository;
-import com.stopwaiting.server.domain.userqueue.UserQueue;
 import com.stopwaiting.server.domain.userqueue.UserQueueRepository;
+import com.stopwaiting.server.domain.waitingInfo.Status;
+import com.stopwaiting.server.web.dto.FCMRequestDto;
 import com.stopwaiting.server.web.dto.user.*;
-import com.stopwaiting.server.web.dto.userqueue.UserQueueResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
+import java.net.URI;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserQueueRepository userQueueRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public Long save(UserSaveRequestDto userSaveRequestDto) {
@@ -37,12 +42,11 @@ public class UserService {
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         Long id = requestDto.getId();
         User entity = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디의 회원정보가 없습니다. id=" + id));
-        entity.updateToken(requestDto.getToken());
         String password = requestDto.getPassword();
         if (!passwordEncoder.matches(password, entity.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        entity.updateToken(requestDto.getToken());
+        updateToken(id,requestDto.getToken());
 
         return UserLoginResponseDto.builder()
                 .id(entity.getId())
@@ -56,17 +60,31 @@ public class UserService {
         user.update(userUpdateRequestDto.getPhoneNumber(),userUpdateRequestDto.getReported());
         return id;
     }
-//    @Transactional
-//    public Long updateToken(Long id, String token){
-//        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
-//        user.updateToken(token);
-//        return id;
-//    }
     @Transactional
-    public Long addReport(Long id){
+    public void updateToken(Long id, String token){
+        User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
+        user.updateToken(token);
+        userRepository.save(user);
+    }
+    @Transactional
+    public void addReport(Long id){
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 회원정보가 없습니다."));
         user.addReport();
-        return id;
+        userRepository.save(user);
+
+        RestTemplate restTemplate = new RestTemplate();
+        FCMRequestDto fcmRequestDto = new FCMRequestDto(user.getToken(),
+                "누적 신고횟수:"+user.getReported(), "조심하세요.");
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("http://localhost:8080")
+                .path("/api/v1/fcm")
+                .encode()
+                .build()
+                .toUri();
+        restTemplate.postForEntity(uri,fcmRequestDto,FCMRequestDto.class);
+
+
     }
     @Transactional
     public Long checkId(Long id){
@@ -78,6 +96,16 @@ public class UserService {
     public UserResponseDto findById(Long id) {
         User entity = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디의 회원정보가 없습니다. id=" + id));
         return new UserResponseDto(entity);
+    }
+
+    public JSONObject findByReported() {
+        JSONObject jsonMain = new JSONObject();
+        jsonMain.put("data",userRepository.findByReported()
+                .stream()
+                .map(user-> modelMapper.map(user,UserReportedResponseDto.class))
+                .collect(Collectors.toList()));
+        return jsonMain;
+
     }
 
 }

@@ -7,10 +7,12 @@ import com.stopwaiting.server.domain.user.User;
 import com.stopwaiting.server.domain.user.UserRepository;
 import com.stopwaiting.server.domain.userqueue.UserQueue;
 import com.stopwaiting.server.domain.userqueue.UserQueueRepository;
+import com.stopwaiting.server.domain.waitingInfo.Status;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfo;
 import com.stopwaiting.server.domain.waitingInfo.WaitingInfoRepository;
 import com.stopwaiting.server.domain.waitingQueue.WaitingQueue;
 import com.stopwaiting.server.domain.waitingQueue.WaitingQueueRepository;
+import com.stopwaiting.server.web.dto.userqueue.UserQueueDeleteRequestDto;
 import com.stopwaiting.server.web.dto.userqueue.UserQueueResponseDto;
 import com.stopwaiting.server.web.dto.userqueue.UserQueueSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,9 @@ import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,4 +55,31 @@ public class UserQueueService {
     }
 
 
+    public JSONObject findQueueByAdminId(Long id) {
+        List<WaitingInfo> waitingInfos = waitingInfoRepository.findByAdminId(id, Status.CONFIRMED);
+        List<Timetable> timetables = new ArrayList<>();
+        for(WaitingInfo waitingInfo:waitingInfos){
+            timetables.addAll(timetableRepository.findByWaitingInfo(waitingInfo));
+        }
+        List<WaitingQueue> waitingQueues = new ArrayList<>();
+        for(Timetable time:timetables){
+            waitingQueues.add(waitingQueueRepository.findByTimetable(time));
+        }
+        JSONObject jsonMain = new JSONObject();
+        jsonMain.put("data",waitingQueues);
+        return jsonMain;
+
+
+    }
+    @Transactional
+    public JSONObject deleteUserQueue(Long id, Long studentId) {
+        WaitingQueue waitingQueue = waitingQueueRepository.findById(id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 WaitingInfo"));
+        User user = userRepository.findById(studentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 User"));
+        UserQueue userQueue = userQueueRepository.findByUserAndWaitingQueue(user,waitingQueue);
+        userQueueRepository.delete(userQueue);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status","ok");
+        return jsonObject;
+    }
 }

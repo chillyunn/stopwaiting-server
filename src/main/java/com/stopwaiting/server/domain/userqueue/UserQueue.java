@@ -19,8 +19,8 @@ public class UserQueue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)//Lazy에서 바꿈
     @JoinColumn(name = "USER_ID")
     private User user;
 

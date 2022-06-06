@@ -21,6 +21,10 @@ public class UserApiController {
         return userService.findById(id);
     }
 
+    @GetMapping("/api/v1/user/reported")
+    public JSONObject findByReported(){
+        return userService.findByReported();
+    }
     @PostMapping("/api/v1/checkid")
     public Long checkId(@RequestBody UserCheckIdRequestDto userCheckIdRequestDto) {
         return userService.checkId(userCheckIdRequestDto.getId());
@@ -40,14 +44,15 @@ public class UserApiController {
     public Long update(@PathVariable Long id, @RequestBody UserUpdateRequestDto requestDto) {
         return userService.update(id, requestDto);
     }
+//    @PutMapping("/api/v1/user/{id}/token")
+//    public void updateToken(@PathVariable Long id, @RequestBody UserTokenRequestDto requestDto){
+//        userService.updateToken(id,requestDto);
+//    }
 
-    @PutMapping("/api/v1/user/report/{id}")
-    public Long addReport(@PathVariable Long id) {
-        return userService.addReport(id);
+    @PutMapping("/api/v1/user/{id}/report")
+    public void addReport(@PathVariable Long id) {
+        userService.addReport(id);
     }
-
-
-
     @DeleteMapping("/api/v1/user/{id}")
     public Long delete(@PathVariable Long id) {
         userService.delete(id);

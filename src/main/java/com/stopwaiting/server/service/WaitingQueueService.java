@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -48,6 +50,17 @@ public class WaitingQueueService {
 
         JSONObject jsonMain = new JSONObject();
         jsonMain.put("data",waitingQueueRepository.findByTimetable(timetable));
+        return jsonMain;
+    }
+    public JSONObject findQueueByInfoId(Long id){
+        WaitingInfo waitingInfo =waitingInfoRepository.findById(id).orElseThrow(()->new IllegalArgumentException("존재하지않는 WaitingInfo"));
+        List<Timetable> timetables = timetableRepository.findByWaitingInfo(waitingInfo);
+        List<WaitingQueue> waitingQueues = new ArrayList<>();
+        for(Timetable time:timetables){
+            waitingQueues.add(waitingQueueRepository.findByTimetable(time));
+        }
+        JSONObject jsonMain = new JSONObject();
+        jsonMain.put("data",waitingQueues);
         return jsonMain;
     }
 

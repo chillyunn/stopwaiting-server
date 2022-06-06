@@ -25,4 +25,8 @@ public class WaitingQueueApiController {
     public JSONObject findQueue(@PathVariable Long id, @RequestParam String time) {
         return waitingQueueService.findQueue(id, time);
     }
+    @GetMapping("/api/v1/waitinginfo/{id}/queues")
+    public JSONObject findQueueByInfoId(@PathVariable Long id){
+        return waitingQueueService.findQueueByInfoId(id);
+    }
 }

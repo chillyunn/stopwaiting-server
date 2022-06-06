@@ -3,6 +3,7 @@ package com.stopwaiting.server.web.api;
 import com.stopwaiting.server.service.WaitingInfoService;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoResponseDto;
 import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoSaveRequestDto;
+import com.stopwaiting.server.web.dto.waitinginfo.WaitingInfoStatusUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -33,15 +34,24 @@ public class WaitingInfoApiController {
     public JSONObject findByAdminId(@RequestParam Long adminId) {
         return waitingInfoService.findByAdminId(adminId);
     }
+
     @GetMapping("/api/v1/waitinginfo/holded")
-    public JSONObject findByStatusIsHold(){
+    public JSONObject findByStatusIsHold() {
         return waitingInfoService.findByStatusIsHolded();
     }
+
     @GetMapping("/api/v1/waitinginfo/confirmed")
-    public JSONObject findByStatusIsConfirmed(){
+    public JSONObject findByStatusIsConfirmed() {
         return waitingInfoService.findByStatusIsConfirmed();
     }
 
-//  @PutMapping("/api/v1/waitinginfo")
+    @PutMapping("/api/v1/waitinginfo/{id}/status")
+    public void updateStatus(@PathVariable Long id, @RequestBody WaitingInfoStatusUpdateDto requestDto){
+        waitingInfoService.updateStatus(id,requestDto);
+    }
+    @DeleteMapping("/api/v1/waitinginfo/{id}")
+    public void delete(@PathVariable Long id){
+        waitingInfoService.delete(id);
+    }
 
 }
