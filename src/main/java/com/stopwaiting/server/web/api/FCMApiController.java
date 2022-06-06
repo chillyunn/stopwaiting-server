@@ -1,5 +1,7 @@
 package com.stopwaiting.server.web.api;
 
+import com.stopwaiting.server.service.FCMService;
+import com.stopwaiting.server.web.dto.FCMRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,14 +13,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 public class FCMApiController {
-    private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final FCMService fcmService;
 
     @PostMapping("/api/fcm")
-    public ResponseEntity pushMessage(@RequestBody RequestDTO requestDTO) throws IOException {
+    public ResponseEntity pushMessage(@RequestBody FCMRequestDto requestDTO) throws IOException {
         System.out.println(requestDTO.getTargetToken() + " "
                 +requestDTO.getTitle() + " " + requestDTO.getBody());
 
-        firebaseCloudMessageService.sendMessageTo(
+        fcmService.sendMessageTo(
                 requestDTO.getTargetToken(),
                 requestDTO.getTitle(),
                 requestDTO.getBody());

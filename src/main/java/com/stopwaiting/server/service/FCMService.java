@@ -1,5 +1,6 @@
 package com.stopwaiting.server.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -10,14 +11,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.ImagingOpException;
 import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class FCMService {
-    private final String API_URL = "https://fcm.googleapis.com/v1/projects/android-****/messages:send";
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/stopwaiting-eebe3/messages:send";
     private final ObjectMapper objectMapper;
 
     public void sendMessageTo(String targetToken, String title, String body) throws IOException {
